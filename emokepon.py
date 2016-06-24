@@ -1,62 +1,80 @@
 import random
-
-opponents = ["Pikachu", "Bulbasaur", "Charmander"]
-
+#-----------------------
+#--DEFINE CLASS OF POKEMONS
+#------------------------
 class Pokemon():
-
     gotta_catch_em_all = "Yes you do."
 
-    def __init__(self, colour):
+    def __init__(self, colour, name, ouch_statement, takethat_statement):
         self.health_points = random.randint(1,10)
         self.colour = colour
+        self.name = name
+        self.ouch_statement = ouch_statement
+        self.takethat_statement = takethat_statement
 
-    def attack(self):
+    def alive(self):
+        return self.health_points > 0
 
-        opponent = random.choice(opponents)
-        print("You attacked:", opponent)
-
-        self.health_points -= 2
-        print("Their health points are:", self.health_points)
-        print("")
-
-        if self.health_points <= 0:
-            print("Peeka pee :(")
+    def attack(self, attacker):
+        if self.alive():
+            print("You attacked:", self.name)
+            self.health_points -= random.randint(2,4);
+            print("Their health points are:", self.health_points)
+            if self.health_points < 3:
+                print(self.ouch_statement)
         else:
-            print("Pi ka chu!")
+            print  random.choice(attacker.phrases)
+            print "You attacked the corpse of %s, you sicko." %self.name
 
-pikachu = Pokemon('yellow')
-bulbasaur = Pokemon('green')
-charmander = Pokemon('red')
+#--------------------------------
+#--DEFINE CLASS OF TRAINER
+#--------------------------------
+class Me():
+    gotta_catch_em_all = "Yes I do."
+    def __init__(self):
+        self.health_points = 10
+        self.phrases = ["Me: I'ma gonna win!",
+            "Me: It's now or never!",
+            "Me: that ship has sailed!",
+            "Me: Take that, mongrel!"]
 
-pikachu.gotta_catch_em_all = "No"
-bulbasaur.gotta_catch_em_all = "Bul ba sire!"
+    def attack(self, pokemon):
+        pokemon.attack(self)
+        self.health_points -= random.randint(1,3)
 
+#----------------------------------
+#--INSTANTIATE CLASSES FOR EMOKEPONS
+#---------------------------------
+pikachu = Pokemon('yellow',"Pikachu", "Peeka Peeka :c", "Pika-CHUUUU")
+bulbasaur = Pokemon('green', "bulbasaur", "mrrrrrr :(", "bulba-bulba!")
+charmander = Pokemon('red', "charmander", "fizzzzzzle :<", "ROAAARRR (Flames also)!")
+
+#----------------------------------
+#--ADD CLASSES TO ARRAY FOR RANDOM CHOICE
+#---------------------------------
+opponents = [pikachu, bulbasaur, charmander]
+
+#----------------------------------
+#--INSTANTIATE CLASSES FOR ME
+#---------------------------------
+me = Me()
+
+
+#----------------------------------
+#--WELCOME TO THE BATTLE
+#---------------------------------
 print("Welcome to Emokepon")
-print("")
-
 print("Pikachu's hit points are:", pikachu.health_points)
 print("Bulbasaur's hit points are:", bulbasaur.health_points)
 print("Charmander's hit points are:", charmander.health_points)
-print("")
-# Looks at Pikcahu's health points and substracts 2 each time
 
-count = 0
-
+#----------------------------------
+#--ROUND LOGIC
+#---------------------------------
+thisround = 1
 while True:
-    pikachu.attack()
-    bulbasaur.attack()
-    charmander.attack()
-
-    count += 1
-
-    if count >= 10:
+    print "\n---------Round %d ----------" %thisround
+    me.attack(random.choice(opponents))
+    thisround += 1
+    if thisround >= 11:
         break
-
-# print("Pikachu's colour is:", pikachu.colour)
-
-
-# print("Bulbasaur's colour is:", bulbasaur.colour)
-
-# print("Do you gotta catch em all?", pikachu.gotta_catch_em_all)
-# print("Do you gotta catch em all?", bulbasaur.gotta_catch_em_all)
-# print("Do you gotta catch em all?", charmander.gotta_catch_em_all)
